@@ -130,7 +130,7 @@
                         <h4>请上传头像：</h4>
                         <el-upload
                                 class="avatar-uploader"
-                                action="http://localhost/GroupHomePage/view/backstage.html#/classmate_list"
+                                action="../static/admin/images"
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccess"
                                 :before-upload="beforeAvatarUpload">
@@ -250,7 +250,7 @@
                         <el-form-item label="" prop="fileList">
                             <el-upload
                                     class="upload-demo"
-                                    action="http://localhost/GroupHomePage/view/backstage.html#/opus"
+                                    action="../static/admin/images"
                                     :on-preview="handlePreview"
                                     :on-remove="handleRemove"
                                     :file-list="fileList"
