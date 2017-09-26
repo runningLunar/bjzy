@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+		}
+		a{
+			text-decoration: none;
+			color:#bfbfbf;
+		}
+		body{
+			font-family: "Microsoft Yahei","SimSun";
+		}
+		.content{
+			width: 100%;
+			background: #fafafa;
+			padding: 30px 0px;
+		}
+		.register{
+			width: 60%;
+			margin:0px auto;
+			border:1px solid #e8e8e8;
+			background: white;
+			padding: 50px 0px;
+		}
+		.reg-content{
+			width: 300px;
+			margin: 0px auto;
+			text-align: center;
+		}
+		.reg-content h1{
+			font-weight: normal;
+			margin-bottom: 30px;
+		}
+		.reg-content input{
+			width: 100%;
+			padding: 10px 8px;
+			font-size: 16px;
+			margin-bottom: 20px;
+		}
+		.reg-content .yanzheng{
+			float: left;
+			width: 50%;
+		}
+		.cap{
+			position: relative;
+			left: -15%;
+			cursor: pointer;
+		}
+		.cap img{
+			position: absolute;
+			display: inline-block;
+			width: 43%;
+		} 
+		.reg-content .btn{
+			display: block;
+			width: 107%;
+			border: 1px solid #e58563;
+    		color: #e58563;
+    		background: white;
+		}
+		.reg-content span{
+			display: block;
+			width: 107%;
+			border-top:1px solid #e8e8e8;
+			padding: 5px 0px;
+		}
+		.reg-content span a{
+			color: #ff946e;
+		}
+		.footer{
+			width: 100%;
+			padding: 54px 0 64px;
+    		background: #505050;
+		}
+		.footer-content{
+			width: 70%;
+			margin: 0px auto;
+			overflow: hidden;
+		}
+		.left{
+			font-size: 12px;
+			float: left;
+		}
+		.left .logo{
+			margin-bottom: 20px;
+		}
+		.left .logo .logo-pic{
+			font-size: 36px;
+			font-weight: bold;
+			
+		}
+		.left .logo .logo-pic a{
+			color: #e58563;
+		}
+		.left ul li{
+			display: block;
+			font-size: 14px;
+			line-height: 30px;
+		}
+		.left ul li a{
+			color: #999;
+		}
+		.left ul li a:hover{
+			color: white;
+		}
+		.copyright{
+			margin-top: 30px;
+			color: #bfbfbf;
+		}
+		.copyright a:hover{
+			color: white;
+		}
+		.right{
+			float: left;
+			margin-left: 200px;
+			font-size: 12px;
+		}
+		.right p{
+			color: #bfbfbf;
+		}
+		.right p:nth-child(1){
+			font-size: 30px;
+			color: white;
+		}
+		.right .kefu{
+			display: inline-block;
+			padding: 5px 30px;
+			background: #e58563;
+			color: white;
+			font-size: 14px;
+			border-radius: 5px;
+			margin-top: 10px;
+			cursor: pointer;
+		}
+		.right .saoma{
+			margin: 20px 0px;
+		}
+		.right .saoma img{
+			width: 60px;
+		}
+		.right .saoma span{
+			display: inline-block;
+			background: white;
+			border-radius: 5px;
+			width: 65px;
+			text-align: center;
+			padding: 5px;
+		}
+		.right .saoma span:nth-child(2){
+			margin-left: 15px;
+		}
+		.tisi{
+			font-size: 12px;
+			color: #e58563;
+			margin-top: -15px;
+			display: none;
+		}
+		.yzti{
+			position: relative;
+			top: 58px;
+    		left: -48%;
+		}
+		@media screen and (max-width: 780px){
+			.register{
+				width: 95%;
+			}
+			.reg-content{
+				padding: 10px;
+				width: 90%;
+			}
+			.reg-content input{
+				width: 95%;
+			}
+			.cap{
+				position: relative;
+				left: -50px;
+			}
+			.cap img{
+				position: absolute;
+				display: inline-block;
+				width: 115px;
+			} 
+			.reg-content .btn{
+				width: 99%;
+			}
+			.reg-content span{
+				width: 99%;
+			}
+			.footer-content{
+				text-align: center;
+				width: 90%;
+			}
+			.left{
+				float: none;
+			}
+			.left .logo{
+				padding-bottom: 10px;
+				border-bottom: 1px solid #999;
+			}
+			.left .logo span:nth-child(2){
+				display: none;
+			}
+			.left ul li{
+				display: inline-block;
+			}
+			.left ul li+li{
+				margin-left: 15px;
+			}
+			.left ul li a{
+				color: white;
+			}
+			.left .copyright{
+				color: white;
+			}
+			.left .copyright a{
+				color: white;
+			}
+			.right{
+				float: none;
+				margin-left: 0px;
+			}
+			.right p:nth-child(1){
+				margin-top: 20px;
+				font-size: 24px;
+			}
+			.right p:nth-child(5){
+				margin-top: 20px;
+				color: white;
+			}
+			.right p:nth-child(6){
+				color: white;
+			}
+			.right .saoma{
+				display: none;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="content">
+		<div class="register">
+			<div class="reg-content">
+				<h1>欢迎加入我们</h1>
+				<form action="">
+					<input type="text" placeholder="帐号" class="zh-value">
+					<div class="tisi zhanghao">请输入姓名</div>
+					<input type="text" placeholder="手机号码" class="phone-value">
+					<div class="tisi phone">请填写手机号码</div>
+					<input type="button" value="发送手机验证码" class="btn">
+					<input type="password" placeholder="密码" class="password-value">
+					<div class="tisi password">请填写密码</div>
+					<!-- <a class="btn">fdsfsdfsdfsdfsdfsdfsdf</a> -->
+					<input type="button" value="注册" class="btn">
+				</form>
+				<span>已有账号？现在去<a href="re_login.php">登录</a></span>
+			</div>
+		</div>
+	</div>
+	
+		
+	</div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$("input").focus(function(){
+  			$(".tisi").hide();
+		});
+     	//验证码部分
+     	$(".cap").click(function(){
+     		//alert(34);
+     		$(".cap").find("img").attr("src","captcha.php?"+Math.random());
+     	})
+     	$(".btn").click(function(){
+     		if($(".zh-value").val().length==0){				//帐号是否为空
+  					$(".zhanghao").show();
+	
+  					return;
+  				}
+  				else if(!/[a-zA-Z0-9]{1,12}/.test($(".zh-value").val())){	//帐号格式验证
+  					$(".zhanghao").show();
+  					$(".zhanghao").html("帐号格式错误，帐户名不能有特殊符号");
+  					//alert(1);
+
+  					return;
+
+  				}
+  				else if($(".phone-value").val().length==0){				//手机号码是否为空
+  					$(".phone").show();
+	
+  					return;
+  				}
+  				else if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test($(".phone-value").val()))){//手机号码格式
+  				 	$(".phone").show();
+  					$(".phone").html("手机格式错误，请输入有效的手机号码");
+
+  					return;
+  				 }
+  				else if($(".password-value").val().length==0){			//密码是否为空
+  					$(".password").show();
+	
+  					return;
+  				}
+  				else if(!(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$/).test($(".password-value").val())){
+  					$(".password").show();
+  					$(".password").html("密码必须由6-12位数字加字母组成");
+  					return;
+  				}
+
+  				else if($(".yanzheng").val().length==0){		//验证码是否为空
+  					$(".yzti").show();
+	
+  					return;
+  				}
+     		 var code_num = $(".yanzheng").val();
+     	
+     	})
+
+	});
+	
+</script>
+</html>
