@@ -36,6 +36,7 @@
                         <router-link to="/personal"><el-menu-item index="1"><i class="el-icon-menu"></i>个人信息</el-menu-item></router-link>
 
                         <router-link to="/opus"><el-menu-item index="2"><i class="el-icon-date"></i>作品管理</el-menu-item></router-link>
+
 <!--                         <router-link to="/comment"><el-menu-item index="3"><i class="el-icon-message"></i>留言评论</el-menu-item></router-link>
                         <router-link to="admin"><el-menu-item index="4"><i class="el-icon-setting"></i>管理员</el-menu-item></router-link>
                         <router-link to="/apply"><el-menu-item index="5"><i class="el-icon-document"></i>作品申请列表</el-menu-item></router-link> -->
@@ -48,13 +49,6 @@
         </div>
     </div>
     
-    <!-- 登陆界面 -->
-    <template id="loginHtml">
-        <div>
-            11111
-        </div>
-    </template>
-    <!-- 登陆界面end -->
 
 
     <!--同学信息列表管理界面-->
@@ -118,26 +112,30 @@
     </style>
     <template id="personal">
         <div class="cl">
+
             <el-tabs v-model="activeName2" type="border-card">
                 <el-tab-pane label="添加同学" name="first">
-                   <div class="touxiang">
+                    <div class="touxiang">
+                     
                         <el-upload
+                                id="upload"
                                 class="avatar-uploader"
-                                action="../static/admin/images"
-
+                                action="{:url('upload')}"
+                                
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccess"
                                 :before-upload="beforeAvatarUpload">
                             <img v-if="imageUrl" :src="imageUrl" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            
                         </el-upload>
-<!--                         <img class="preview" :src="imageUrl"><br>
-                        <div class="pic"><input id="picture" type="file" @change="picChange" ref="inputer"><label for="picture">选择图片</label></div> -->
+                     
                     </div>
                     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                        <el-form-item prop="id" hidden></el-form-item>
                         <el-form-item label="姓名" prop="name">
-                            <el-col class="line" :span="7"><el-input v-model="ruleForm.name"></el-input></el-col>
-                            <el-col class="line" :span="17"></el-col>
+                            <el-col class="line" :span="8"><el-input v-model="ruleForm.name"></el-input></el-col>
+                            <el-col class="line" :span="16"></el-col>
                         </el-form-item>
                         <el-form-item label="性别" prop="sex">
                             <el-select v-model="ruleForm.sex" placeholder="请选择性别">
@@ -145,7 +143,18 @@
                                 <el-option label="女" value="women"></el-option>
                             </el-select>
                         </el-form-item>
-                       
+                        <el-form-item label="学校" prop="school">
+                            <el-col class="line" :span="8"><el-input v-model="ruleForm.school"></el-input></el-col>
+                            <el-col class="line" :span="16"></el-col>
+                        </el-form-item>
+                        <el-form-item label="职位" prop="post">
+                            <el-col class="line" :span="8"><el-input v-model="ruleForm.post"></el-input></el-col>
+                            <el-col class="line" :span="16"></el-col>
+                        </el-form-item>
+                        <el-form-item label="住址" prop="address">
+                            <el-col class="line" :span="8"><el-input v-model="ruleForm.address"></el-input></el-col>
+                            <el-col class="line" :span="16"></el-col>
+                        </el-form-item>
                         <el-form-item label="自我介绍" prop="desc">
                             <el-input type="textarea" v-model="ruleForm.desc"></el-input>
                         </el-form-item>
@@ -162,6 +171,7 @@
     <!--作品管理页面-->
     <template id="opus">
         <div>
+            
             <el-tabs v-model="activeName2" type="border-card">
                 <el-tab-pane label="作品列表" name="first">
                     <el-table
@@ -173,7 +183,7 @@
                                 width="100"
                         >
                             <template scope="scope">
-                                <span style="margin-left: 10px">{{ scope.row.opusID }}</span>
+                                <span style="margin-left: 10px">{{ scope.row.id }}</span>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -181,14 +191,14 @@
                                 >
                             <template scope="scope">
                                 <el-icon name="time"></el-icon>
-                                <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                                <span style="margin-left: 10px">{{ scope.row.cn_time }}</span>
                             </template>
                         </el-table-column>
                         <el-table-column
                                 label="作品名称"
                         >
                             <template scope="scope">
-                                <span style="margin-left: 10px">{{ scope.row.opusName }}</span>
+                                <span style="margin-left: 10px">{{ scope.row.pro_name }}</span>
                             </template>
                         </el-table-column>
 
@@ -196,12 +206,12 @@
                             <template scope="scope">
                                 <el-button
                                         size="small"
-                                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                                        @click="handleEdit(scope.row.id, scope.row)">编辑</el-button>
                                 <el-button
                                         size="small"
                                         type="danger"
-                                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                                 <el-button
+                                        @click="delPro(scope.row.id)">删除</el-button>
+                                <el-button
                                         size="small"
                                         type="success"
                                         @click="javascript:void(0);">详情</el-button>
@@ -214,10 +224,12 @@
                         <el-form-item label="">
                             <el-upload
                                     class="upload-demo"
-                                    action="../static/admin/images"
+                                    action="{:url('upload')}"
                                     :on-preview="handlePreview"
                                     :on-remove="handleRemove"
-                            
+                                    :on-success="handleSuccess"
+
+                                    :file-list="bindFileList"
                                     list-type="picture">
                                 <el-button size="small" type="primary">点击上传作品截图</el-button>
                                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -229,8 +241,8 @@
                             <el-col class="line" :span="17"></el-col>
                         </el-form-item>
                        
-                        <el-form-item label="作品介绍" prop="desc">
-                            <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+                        <el-form-item label="作品介绍" prop="des">
+                            <el-input type="textarea" v-model="ruleForm.des"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="submitForm('ruleForm')">立即上传</el-button>
@@ -243,8 +255,50 @@
     </template>
     <!--作品管理页面end-->
 
+    <!-- 作品修改页面 -->
+    <template id="opus-change">
+        <div>
+            
+            <el-tabs v-model="activeName2" type="border-card">
+                
+                <el-tab-pane label="作品修改" name="first">
+                    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                        <el-form-item label="">
+                            <el-upload
+                                    class="upload-demo"
+                                    action="{:url('upload')}"
+                                    :on-preview="handlePreview"
+                                    :on-remove="handleRemove"
+                                    :on-success="handleSuccess"
+
+                                    :file-list="bindFileList"
+                                    list-type="picture">
+                                <el-button size="small" type="primary">点击上传作品截图</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+
+                        </el-form-item>
+                        <el-form-item label="作品名称" prop="name">
+                            <el-col class="line" :span="7"><el-input v-model="ruleForm.name"></el-input></el-col>
+                            <el-col class="line" :span="17"></el-col>
+                        </el-form-item>
+                       
+                        <el-form-item label="作品介绍" prop="des">
+                            <el-input type="textarea" v-model="ruleForm.des"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="submitForm('ruleForm')">立即上传</el-button>
+                            <el-button @click="resetForm('ruleForm')">重置</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
+    </template>
+    <!-- 作品修改页面end -->
 </body>
 <!-- 先引入 Vue -->
+
 
 
 
@@ -253,8 +307,12 @@
 <!-- 引入组件库 -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://cdn.bootcss.com/vue-router/2.7.0/vue-router.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-   
+
+    
+    var fileList = <?php echo json_encode($file_list) ?>;
+
     const router=new VueRouter({
         mode: "hash",
         routes: [
@@ -265,65 +323,24 @@
                     template:"#personal",
                     data() {
                         return {
-                            imageUrl: '',
+                            imageUrl:"{$msg['stu_pho']}",
+                            picPath:'',
                             activeName2: 'first',
                             ruleForm: {
-                                name: '',
-                                sex: '',
-                                date1: '',
-                                date2: '',
-                                delivery: false,
-                                type: [],
-                                resource: '',
-                                desc: ''
+                                picsrc: "{$msg['stu_pho']}",
+                                id:"{$msg['id']}",
+                                name: "{$msg['stu_name']}",
+                                sex: "{$msg['stu_sex']}",
+                                school: "{$msg['stu_sch']}",
+                                post:"{$msg['stu_post']}",
+                                address:"{$msg['stu_address']}",
+                                desc: "{$msg['stu_des']}"
                             },
-                            tableData3: [{
-                                date: '1',
-                                name: '王小虎',
-                                school: '上海市普陀区金沙江路 1518 弄',
-                                email:'13413412341'
-                            }, {
-                                date: '2',
-                                name: '王小虎',
-                                school: '上海市普陀区金沙江路 1518 弄',
-                                email:'13413412341'
-                            }, {
-                                date: '3',
-                                name: '王小虎',
-                                school: '上海市普陀区金沙江路 1518 弄'
-                            }, {
-                                date: '4',
-                                name: '王小虎',
-                                school: '上海市普陀区金沙江路 1518 弄'
-                            }, {
-                                date: '5',
-                                name: '王小虎',
-                                school: '上海市普陀区金沙江路 1518 弄'
-                            }, {
-                                date: '6',
-                                name: '王小虎',
-                                school: '上海市普陀区金沙江路 1518 弄'
-                            }, {
-                                date: '7',
-                                name: '王小虎',
-                                school: '上海市普陀区金沙江路 1518 弄'
-                            }],
                             rules: {
                                 name: [
-                                    { required: true, message: '请输入同学姓名', trigger: 'blur' },
+                                    { required: true, message: '请输入姓名', trigger: 'blur' },
                                 ],
-                                sex: [
-                                    { required: true, message: '请选择同学性别', trigger: 'change' }
-                                ],
-                                date1: [
-                                    { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-                                ],
-                                date2: [
-                                    { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-                                ],
-                                type: [
-                                    { type: 'array', required: true, message: '请至少选择一个爱好', trigger: 'change' }
-                                ],
+
                                 desc: [
                                     { required: true, message: '请填写自我介绍', trigger: 'blur' }
                                 ]
@@ -333,34 +350,28 @@
                     },
 
                     methods: {
+
                         submitForm(formName) {
+                            console.log(this.$refs[formName])
                             this.$refs[formName].validate((valid) => {
                                 if (valid) {
-                                    alert('submit!');
+                                    axios.post("{:url('change')}",this.ruleForm)
+                                        .then(function (response) {
+                                            window.location.href = "{:url('index')}";
+                                        })
+                                        .catch(function (error) {
+                                            console.log(error);
+                                        });
+                                  
                                 } else {
                                     console.log('error submit!!');
                                     return false;
                                 }
                             });
                         },
-                        picChange(e){
-                            this.file = this.$refs.inputer.files[0];
-                            // console.log(this.file.src)
-                            // this.imageUrl = this.file.name;
-                            if (/^image/.test(this.file.type)) {
-                                var that = this;
-                                // 创建一个reader
-                                var reader = new FileReader();
-                                // 将图片将转成 base64 格式
-                                reader.readAsDataURL(that.file);
-                                // 读取成功后的回调
-                                reader.onloadend = function () {
-                                    that.imageUrl = this.result;
-                                }
-                            }
-                        },
                         handleAvatarSuccess(res, file) {
-                            this.imageUrl = URL.createObjectURL(file.raw);
+                            this.ruleForm.picsrc = res;
+                            this.imageUrl = res;
                         },
                         beforeAvatarUpload(file) {
                             const isJPG = file.type === 'image/jpeg';
@@ -390,7 +401,7 @@
                                 message: '已取消删除'
                               });          
                             });
-                          }
+                        }
                     }
 
                 },
@@ -406,30 +417,11 @@
                             ruleForm: {
                                 fileList:[],
                                 name: '',
-                                date1: '',
-                                date2: '',
                                 type: [],
-                                desc: ''
+                                des: ''
                             },
-                            tableData: [{
-                                opusID:1,
-                                date: '2016-05-02',
-                                opusName:'杀人嘎哈是腐女啊',
-                                name: '王小虎',
-                                address: '上海市普陀区金沙江路 1518 弄'
-                            }, {
-                                date: '2016-05-04',
-                                name: '王小虎',
-                                address: '上海市普陀区金沙江路 1517 弄'
-                            }, {
-                                date: '2016-05-01',
-                                name: '王小虎',
-                                address: '上海市普陀区金沙江路 1519 弄'
-                            }, {
-                                date: '2016-05-03',
-                                name: '王小虎',
-                                address: '上海市普陀区金沙江路 1516 弄'
-                            }],
+                            bindFileList: [],
+                            tableData: fileList,
                             rules: {
                                 name: [
                                     { required: true, message: '请输入作品名称', trigger: 'blur' },
@@ -443,7 +435,7 @@
                                 type: [
                                     { type: 'array', required: true, message: '请至少选择一个类型', trigger: 'change' }
                                 ],
-                                desc: [
+                                des: [
                                     { required: true, message: '请填写作品介绍', trigger: 'blur' }
                                 ]
                             }
@@ -452,10 +444,157 @@
                     },
 
                     methods: {
+
                         submitForm(formName) {
                             this.$refs[formName].validate((valid) => {
                                 if (valid) {
-                                    alert('submit!');
+                                    this.ruleForm.fileList=JSON.stringify(this.ruleForm.fileList)
+                                    console.log(this.ruleForm.fileList);
+                                    axios.post("{:url('addPro')}",this.ruleForm)
+                                        .then(function (response) {
+                                            window.location.href = "{:url('index')}";
+                                        })
+                                        .catch(function (error) {
+                                            console.log(error);
+                                        });
+                                } else {
+                                    console.log('error submit!!');
+                                    return false;
+                                }
+                            });
+                        },
+                        resetForm(formName) {
+                            this.$refs[formName].resetFields();
+                        },
+                        handleEdit(index, row) {
+                            // session.setAttribute("pro_id",index);
+                            router.push({name: 'opusChange', params: {id:index}});
+                        },
+                        handleSuccess(res,file,fileList){
+                            console.log(res);
+                            this.ruleForm.fileList.push(res);
+                            console.log(this.ruleForm.fileList);
+                            this.bindFileList.push({
+                                url:res
+                            })
+                            console.log(this.bindFileList);
+                        },
+                        handleDelete(index, row) {
+                            axios.post("{:url('delPro')}",{
+                                    id:index
+                                }).then(function (response) {
+                                    window.location.href = "{:url('index')}";
+                                });
+                        },
+                        handleRemove(file, fileList) {
+                            console.log(file, fileList);
+                        },
+                        handlePreview(file) {
+                            console.log(file);
+                        },
+                        delPro(index) {
+                            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                              confirmButtonText: '确定',
+                              cancelButtonText: '取消',
+                              type: 'warning'
+                            }).then(() => {
+
+                                axios.post("{:url('delPro')}",{
+                                        id:index
+                                    }).then(function (response) {
+                                        window.location.href = "{:url('index')}";
+                                    }).catch(function (error) {
+                                        console.log(error);
+                                    });
+
+                            }).catch(() => {
+                              this.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                              });
+                            });
+                        }
+                    }
+                }
+            },
+            {
+                path:'/opusChange',
+                name:'opusChange',
+                component:{
+                    template:"#opus-change",
+                    data(){
+                        return{
+                            activeName2: 'first',
+                            ruleForm: {
+                                id:'',
+                                fileList:[],
+                                name: '',
+                                type: [],
+                                des: ''
+                            },
+                            bindFileList: [],
+                            tableData: fileList,
+                            rules: {
+                                name: [
+                                    { required: true, message: '请输入作品名称', trigger: 'blur' },
+                                ],
+                                date1: [
+                                    { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                                ],
+                                date2: [
+                                    { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+                                ],
+                                type: [
+                                    { type: 'array', required: true, message: '请至少选择一个类型', trigger: 'change' }
+                                ],
+                                des: [
+                                    { required: true, message: '请填写作品介绍', trigger: 'blur' }
+                                ]
+                            }
+                        }
+
+                    },
+                    created(){
+                            var id = this.$route.params.id;
+                            this.ruleForm.id = id;
+                            var that = this;
+                            axios.get("{:url('getPro')}",{
+                                　　params: { 'id': id }
+                                })
+                                .then(function (response) {
+                                    
+                                    var data = response.data;
+                                    
+                                    that.ruleForm.name = data.pro_name;
+                                    that.ruleForm.des = data.pro_des;
+                                    var list = JSON.parse(data.pro_image);
+                                    that.ruleForm.fileList = list;
+                                  
+                                    list.forEach(function(item){
+                                        that.bindFileList.push({
+                                            url:item
+                                        })
+                                    })
+
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+                        },
+                    methods: {
+
+                        submitForm(formName) {
+                            this.$refs[formName].validate((valid) => {
+                                if (valid) {
+                                    this.ruleForm.fileList=JSON.stringify(this.ruleForm.fileList)
+ 
+                                    axios.post("{:url('changePro')}",this.ruleForm)
+                                        .then(function (response) {
+                                            window.location.href = "{:url('index')}";
+                                        })
+                                        .catch(function (error) {
+                                            console.log(error);
+                                        });
                                 } else {
                                     console.log('error submit!!');
                                     return false;
@@ -468,18 +607,38 @@
                         handleEdit(index, row) {
                             console.log(index, row);
                         },
+                        handleSuccess(res,file,fileList){
+                            this.ruleForm.fileList.push(res);
+                            this.bindFileList.push({
+                                url:res
+                            })
+                            console.log(this.bindFileList);
+                        },
                         handleDelete(index, row) {
-                            console.log(index, row);
+                            axios.post("{:url('delPro')}",{
+                                    id:index
+                                }).then(function (response) {
+                                    window.location.href = "{:url('index')}";
+                                });
                         },
                         handleRemove(file, fileList) {
-                            console.log(file, fileList);
+                            // console.log(file);
+                            // console.log(fileList)
+                            var that = this;
+                            this.ruleForm.fileList = [];
+                            fileList.forEach(function(item){
+                                
+                                that.ruleForm.fileList.push(item.url);
+                            })
                         },
                         handlePreview(file) {
                             console.log(file);
                         }
+                        
                     }
                 }
             }
+
         ],
     })
     new Vue({
